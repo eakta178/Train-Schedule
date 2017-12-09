@@ -49,16 +49,29 @@
     newFrequency.text(childSnapshot.val().frequency)
     var newNextArrival = $("<td class='nextArrival'>");
     //calculate time diff between first time and current time 
-    var timeSinceFirst = childSnapshot.val().startTime;
-    var timeDiff = "";
+    var startFirstTime = childSnapshot.val().startTime;
+    var endTime = moment.fromNow();//this need to be corrected
+    var timeDiff = moment.utc(moment(endTime, "HH:mm:ss").diff(moment(startFirstTime, "HH:mm:ss"))).format("mm");
+   
+    var freq = childSnapshot.val().frequency;
     //divide timeDiff by frequency if no remainder next arrival is current time .
     //if remainder is > 0 then value=frequency-(frequency*remainder)
     //next arrival = current time + value
-    var nextArrival = "";
-    newNextArrival.text(nextArrival);
-     //ArrivalMin = value 
-    var ArrivalMin = "";
+    //ArrivalMin = value 
+    var nextArrival;
+    var rem =timeDiff % freq;
+    var ArrivalMin = 0;
+    if(rem === 0)
+    {
+      nextArrival = endTime;
+    }
+    else{
+      ArrivalMin = freq - (freq*rem);
+      nextArrival = endTime + value;//convert this to military format
 
+    }
+
+    newNextArrival.text(nextArrival);
     var newArrivalMin =$("<td class='nextArrivalMin'>");
     newArrivalMin.text(ArrivalMin);
   
