@@ -50,32 +50,35 @@
     var newNextArrival = $("<td class='nextArrival'>");
     //calculate time diff between first time and current time 
     var startFirstTime = childSnapshot.val().startTime;
+    // // -------------------------------------just commented
     var endTime = Math.round((new Date()).getTime() / 1000); 
     console.log('current time: '+ moment(endTime, "X").format("HH:mm"));
     var currentTime = moment(endTime, "X").format("HH:mm");
-    //var timeDiff = moment.utc(moment(currentTime, "HH:mm").diff(moment(startFirstTime, "HH:mm"))).format("mm");
-    var timeDiff = moment(moment(currentTime, "HH:mm").diff(moment(startFirstTime, "HH:mm"))).format("mm");
-   console.log('time diff: '+ timeDiff);
+    var timeDiff = moment.duration(moment().diff(moment(startFirstTime, "HH:mm")), 'milliseconds').asMinutes();
+    console.log('time diff: '+ timeDiff);
     var freq = childSnapshot.val().frequency;
     console.log('frequency: '+freq);
     //divide timeDiff by frequency if no remainder next arrival is current time .
-    //if remainder is > 0 then value=frequency-(frequency*remainder)
-    //next arrival = current time + value
-    //ArrivalMin = value 
+    //if remainder is > 0 then ArrivalMin=frequency-remainder
+    //next arrival = current time + ArrivalMin
+     
     var nextArrival;
     var rem =timeDiff % freq;
     console.log('remainder: '+ rem)
     var ArrivalMin = 0;
+    
     if(rem === 0)
     {
       nextArrival = currentTime;
     }
     else{
-      ArrivalMin = freq-rem;
-      nextArrival =moment().add(ArrivalMin, 'm' ).add (currentTime);
-      console.log('converted arrival min: '+ moment(ArrivalMin, "mm").format("HH:mm"))
+      ArrivalMin = Math.ceil(freq-rem);
+     
+      nextArrival = timeDiff > 0 ? moment().add(ArrivalMin, 'minutes' ) : moment(startFirstTime, "HH:mm")
+     
   
-    }
+    } 
+
     var nextArrivalpretty= moment(nextArrival).format("HH:mm");
 
     newNextArrival.text(nextArrivalpretty);

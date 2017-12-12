@@ -7,6 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="style.css">
     <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Spectral+SC" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment-with-locales.min.js"></script>
 	
@@ -15,7 +16,7 @@
 
 	<div class="container-fluid">
 		<div class="row">
-                <div class="jumbotron text-center">
+                <div class="jumbotron text-center" id="heading">
                         <h1>Train Realtime Database</h1>
                         <p>Departure and Arrival</p>
                         
@@ -27,7 +28,9 @@
         <div class="panel panel-primary">
                 
                         
-            <div class="panel-heading">Current Train Schedule</div>
+            <div class="panel-heading" id="pheadnext">
+                <h3 class="panel-title"><strong>Current Train Schedule</strong></h3>
+            </div>
                       
                         
             <table class="table">
@@ -51,7 +54,7 @@
 
         </div>
         <div class="panel panel-primary">
-            <div class="panel-heading">
+            <div class="panel-heading" id="phead">
               <h3 class="panel-title"><strong>Add Train</strong></h3>
             </div>
             <div class="panel-body">
@@ -60,19 +63,19 @@
               <form>
                 <div class="form-group">
                   <label for="train-name-input">Train Name</label>
-                  <input class="form-control" id="train-name-input" type="text">
+                  <input class="form-control" id="train-name-input" type="text" placeholder="Add train name">
                 </div>
                 <div class="form-group">
                   <label for="destination-input">Destination</label>
-                  <input class="form-control" id="destination-input" type="text">
+                  <input class="form-control" id="destination-input" type="text" placeholder="Add Destination City">
                 </div>
                 <div class="form-group">
                   <label for="start-input">First Train Time (HH:mm military time)</label>
-                  <input class="form-control" id="start-input" type="text">
+                  <input class="form-control" id="start-input" type="text" placeholder="Add past time only">
                 </div>
                 <div class="form-group">
                   <label for="frequency-input">Frequency</label>
-                  <input class="form-control" id="frequency-input" type="text">
+                  <input class="form-control" id="frequency-input" type="text" placeholder="Enter frequency in minutes only">
                 </div>
                 <button class="btn btn-primary" id="addrow" type="submit">Submit</button>
               </form>
