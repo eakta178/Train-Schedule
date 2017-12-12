@@ -26,7 +26,7 @@
     
     trainName = $("#train-name-input").val().trim();
     destination = $("#destination-input").val().trim();
-    startTime = moment($("#start-input").val().trim(), "HH:mm").format("X");
+    startTime = $("#start-input").val().trim();
     frequency = $("#frequency-input").val().trim();
 
     //to DB
@@ -50,28 +50,35 @@
     var newNextArrival = $("<td class='nextArrival'>");
     //calculate time diff between first time and current time 
     var startFirstTime = childSnapshot.val().startTime;
-    var endTime = moment.fromNow();//this need to be corrected
-    var timeDiff = moment.utc(moment(endTime, "HH:mm:ss").diff(moment(startFirstTime, "HH:mm:ss"))).format("mm");
-   
+    var endTime = Math.round((new Date()).getTime() / 1000); 
+    console.log('current time: '+ moment(endTime, "X").format("HH:mm"));
+    var currentTime = moment(endTime, "X").format("HH:mm");
+    //var timeDiff = moment.utc(moment(currentTime, "HH:mm").diff(moment(startFirstTime, "HH:mm"))).format("mm");
+    var timeDiff = moment(moment(currentTime, "HH:mm").diff(moment(startFirstTime, "HH:mm"))).format("mm");
+   console.log('time diff: '+ timeDiff);
     var freq = childSnapshot.val().frequency;
+    console.log('frequency: '+freq);
     //divide timeDiff by frequency if no remainder next arrival is current time .
     //if remainder is > 0 then value=frequency-(frequency*remainder)
     //next arrival = current time + value
     //ArrivalMin = value 
     var nextArrival;
     var rem =timeDiff % freq;
+    console.log('remainder: '+ rem)
     var ArrivalMin = 0;
     if(rem === 0)
     {
-      nextArrival = endTime;
+      nextArrival = currentTime;
     }
     else{
-      ArrivalMin = freq - (freq*rem);
-      nextArrival = endTime + value;//convert this to military format
-
+      ArrivalMin = freq-rem;
+      nextArrival =moment().add(ArrivalMin, 'm' ).add (currentTime);
+      console.log('converted arrival min: '+ moment(ArrivalMin, "mm").format("HH:mm"))
+  
     }
+    var nextArrivalpretty= moment(nextArrival).format("HH:mm");
 
-    newNextArrival.text(nextArrival);
+    newNextArrival.text(nextArrivalpretty);
     var newArrivalMin =$("<td class='nextArrivalMin'>");
     newArrivalMin.text(ArrivalMin);
   
